@@ -1,4 +1,6 @@
-﻿namespace IPK_sniffer;
+﻿using System;
+
+namespace IPK_sniffer;
 
 public class Arguments
 {
@@ -28,7 +30,14 @@ public class Arguments
                 case "-i":
                 case "--interface":
                     if (i + 1 < args.Length){
-                        Interface = args[++i];
+                        if (!args[i + 1].StartsWith("-"))
+                        {
+                            Interface = args[++i];
+                        } 
+                        else 
+                        {
+                            Interface = null;
+                        }
                     }
                     break;
                 case "-p":
@@ -102,6 +111,10 @@ public class Arguments
                     {
                         PacketCount = 1;
                     }
+                    break;
+                default:
+                    Console.Error.WriteLine($"Unknown argument: {args[i]}");
+                    Environment.Exit(1);
                     break;
                 
                 
