@@ -2,13 +2,31 @@
 
 namespace IPK_sniffer;
 
-public static class Sniffer
+public class Sniffer
 {
-    private static LibPcapLiveDevice Device { get; set; }
+    private static LibPcapLiveDevice? Device { get; set; }
         
     private static Arguments Options { get; set; }
     
-    public static void ListAvailableDevices()
+    public Sniffer(Arguments options)
+    {
+        Options = options;
+        if (Options.Interface == null)
+        {
+            ListAvailableDevices();
+            return;
+        }
+        
+        var devices = LibPcapLiveDeviceList.Instance;
+        Device = devices.FirstOrDefault(d => d.Interface.FriendlyName == Options.Interface);
+        if (Device == null)
+        {
+            Console.WriteLine($"Device {Options.Interface} not found");
+            return;
+        }
+    }
+
+    private static void ListAvailableDevices()
     {
         var devices = LibPcapLiveDeviceList.Instance;
         if (devices.Count < 1)

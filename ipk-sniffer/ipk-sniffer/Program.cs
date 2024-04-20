@@ -12,11 +12,9 @@ namespace IPK_sniffer
         private static void Main(string[] args)
         {
             var arguments = new Arguments(args);
-            if(arguments.Interface == null)
-            {
-                Sniffer.ListAvailableDevices();
-                return;
-            }
+            var sniffer = new Sniffer(arguments);
+            
+            
         }
     }
 }
