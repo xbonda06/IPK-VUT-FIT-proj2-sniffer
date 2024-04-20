@@ -4,6 +4,10 @@ public class Arguments
 {
     public string? Interface { get; private set; }
     public int? Port { get; private set; }
+    
+    public bool SourceOnly { get; private set; }
+    
+    public bool DestOnly { get; private set; }
     public bool Tcp { get; private set; }
     public bool Udp { get; private set; }
     public bool Arp { get; private set; }
@@ -30,6 +34,15 @@ public class Arguments
                 case "-p":
                 case "--port-source":
                 case "--port-destination":
+                    if (args[i] == "--port-source")
+                    {
+                        SourceOnly = true;
+                    }
+                    else if (args[i] == "--port-destination")
+                    {
+                        DestOnly = true;
+                    }
+                    
                     try 
                     {
                         Port = int.Parse(args[++i]);
