@@ -1,3 +1,15 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System;
+using System.Collections.Generic;
 
-Console.WriteLine("Hello, World!");
+namespace IPK_sniffer
+{
+    internal static class Program
+    {
+        private static void Main(string[] args)
+        {
+            var arguments = new Arguments(args);
+            
+            
+        }
+    }
+}
