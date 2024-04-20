@@ -1,5 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using SharpPcap;
+using PacketDotNet;
 
 namespace IPK_sniffer
 {
@@ -8,8 +12,11 @@ namespace IPK_sniffer
         private static void Main(string[] args)
         {
             var arguments = new Arguments(args);
-            
-            
+            if(arguments.Interface == null)
+            {
+                Sniffer.ListAvailableDevices();
+                return;
+            }
         }
     }
 }

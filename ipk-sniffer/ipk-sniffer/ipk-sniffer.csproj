@@ -8,4 +8,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SharpPcap" Version="6.3.0" />
+      <PackageReference Include="Sharp_Pcap" Version="4.2.0" />
+    </ItemGroup>
+
 </Project>
