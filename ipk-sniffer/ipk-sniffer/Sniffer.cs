@@ -28,11 +28,24 @@ public class Sniffer
         }
 
         Console.CancelKeyPress += HandleCancelKey;
+        Device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
         
         int readTimeoutMilliseconds = 1000;
-        Device.Open(DeviceModes.Promiscuous, readTimeoutMilliseconds);
+        Device.Open(mode: DeviceModes.Promiscuous, read_timeout: readTimeoutMilliseconds);
         Device.Filter = FilterInit();
+        Device.Capture();
     }
+
+    public static void device_OnPacketArrival(object sender, PacketCapture e)
+    {
+        var packet = e.GetPacket();
+        var parsedPacket = Packet.ParsePacket(packet.LinkLayerType, packet.Data);
+        var time = packet.Timeval.Date.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
+        var len = packet.Data.Length;
+        var ip = parsedPacket.Extract<IPPacket>();
+
+    }
+    
 
     private static string FilterInit()
     {
