@@ -47,6 +47,37 @@ $ make clean
 
 ## Repository changelog
 
+commit 99a1a40f073bf049f39d349161ebaca28bc6ca08 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz> Date:   Sun Apr 21 02:53:08 2024 +0200
+
+```
+feat: add CancelKey handle, Filter initialisation
+```
+
+commit fb8508b777b03125d1143ed9b10f20fedb634f55 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz> Date:   Sun Apr 21 01:04:55 2024 +0200
+
+```
+feat: add device search to sniffer constructor
+```
+
+commit 46824015715ac278c0756f867ed87d21cba0e685 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>Date:   Sun Apr 21 00:29:10 2024 +0200
+
+```
+feat: add Sniffer class, ListAvailableDevices
+```
+
+
+commit 7f3e2a6440f7ffcfa481a30c3dc170943274b935 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz> Date:   Sun Apr 21 00:28:26 2024 +0200
+
+```
+fix: not provided -i value, wrong argument error
+```
+
+commit 644af58814e699a30b48d6d3788ece0f63cceb4a Author: xbonda06 <xbonda06@stud.fit.vutbr.cz> Date:   Sat Apr 20 23:09:35 2024 +0200
+
+```
+fix: --port-source, --port-destination parsing
+```
+
 commit 82c06bc8a86b03da65cf36d5c3f3a10e790d9f8e Author: xbonda06 <xbonda06@stud.fit.vutbr.cz> Date: Sat Apr 20 22:38:48 2024 +0200
 
 ```
@@ -63,10 +94,4 @@ commit 1b9b7fc72e97fc545ab532b93615ab08217e956c Author: xbonda06 <xbonda06@stud.
 
 ```
 Initial commit
-```
-
-commit 644af58814e699a30b48d6d3788ece0f63cceb4a Author: xbonda06 <xbonda06@stud.fit.vutbr.cz> Date:   Sat Apr 20 23:09:35 2024 +0200
-
-```
-fix: --port-source, --port-destination parsing
 ```
