@@ -1,4 +1,5 @@
-﻿using SharpPcap;
+﻿using PacketDotNet;
+using SharpPcap;
 using SharpPcap.LibPcap;
 
 namespace IPK_sniffer;
@@ -47,15 +48,15 @@ public class Sniffer
             {
                 if(Options.SourceOnly)
                 {
-                    filter += $"src port {Options.Port}) or ";
+                    filter += $"and src port {Options.Port}) or ";
                 }
                 else if (Options.DestOnly)
                 {
-                    filter += $"dst port {Options.Port}) or ";
+                    filter += $"and dst port {Options.Port}) or ";
                 }
                 else
                 {
-                    filter += $"port {Options.Port}) or ";
+                    filter += $"and port {Options.Port}) or ";
                 }
             }
         }
@@ -71,15 +72,15 @@ public class Sniffer
             {
                 if(Options.SourceOnly)
                 {
-                    filter += $"src port {Options.Port}) or ";
+                    filter += $"and src port {Options.Port}) or ";
                 }
                 else if (Options.DestOnly)
                 {
-                    filter += $"dst port {Options.Port}) or ";
+                    filter += $"and dst port {Options.Port}) or ";
                 }
                 else
                 {
-                    filter += $"port {Options.Port}) or ";
+                    filter += $"and port {Options.Port}) or ";
                 }
             }
         }
@@ -87,11 +88,6 @@ public class Sniffer
         if(Options.Arp)
         {
             filter += "(arp) or ";
-        }
-        
-        if(Options.Ndp)
-        {
-            filter += "(ndp) or ";
         }
         
         if(Options.Icmp4)
@@ -108,10 +104,17 @@ public class Sniffer
         {
             filter += "(igmp) or ";
         }
-        
-        if(Options.Mld)
+
+        if (!Options.Icmp6)
         {
-            filter += "(mld) or ";
+            if(Options.Ndp)
+            {
+                filter += "(icmp6) or ";
+            } 
+            else if (Options.Mld)
+            {
+                filter += "(icmp6) or ";
+            }
         }
         
         if (filter.Length > 0)
@@ -122,7 +125,7 @@ public class Sniffer
         return filter;
     }
 
-    private static void HandleCancelKey(object? sender, ConsoleCancelEventArgs e)
+    private static void HandleCancelKey(object sender, ConsoleCancelEventArgs e)
     {
         Device?.StopCapture();
         Device?.Close();
