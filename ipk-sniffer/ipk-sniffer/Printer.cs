@@ -2,6 +2,17 @@
 
 public abstract class Printer
 {
+    public static void PrintTransport(string timestamp, string frameLenth, string srcIp, string dstIp, 
+        string srcPort, string dstPort, byte[] bytes)
+    {
+        Console.WriteLine($"timestamp: {timestamp}");
+        Console.WriteLine($"src IP: {srcIp}");
+        Console.WriteLine($"dst IP: {dstIp}");
+        Console.WriteLine($"src port: {srcPort}");
+        Console.WriteLine($"dst port: {dstPort}");
+        Console.WriteLine($"frame length: {frameLenth}");
+        PrintData(bytes);
+    }
     public static void PrintAtp(string timestamp, string srcMac, string dstMac, string frameLenth, byte[] bytes)
     {
         string srcMacFormatted = ConvertMacAddress(srcMac);

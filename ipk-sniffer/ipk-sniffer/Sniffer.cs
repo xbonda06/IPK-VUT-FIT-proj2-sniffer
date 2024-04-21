@@ -40,23 +40,33 @@ public class Sniffer
 
     public static void device_OnPacketArrival(object sender, PacketCapture e)
     {
-        var packet = e.GetPacket();
-        var parsedPacket = Packet.ParsePacket(packet.LinkLayerType, packet.Data);
-        var time = packet.Timeval.Date.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
-        var len = packet.Data.Length;
+        var currPacket = e.GetPacket();
+        var parsedPacket = Packet.ParsePacket(currPacket.LinkLayerType, currPacket.Data);
+        var time = currPacket.Timeval.Date.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
+        var len = currPacket.Data.Length;
         
-        
-        if (Options.Arp)
+        var arpPacket = parsedPacket.Extract<ArpPacket>();
+        if (arpPacket != null)
         {
-            var arpPacket = parsedPacket.Extract<ArpPacket>();
-            if (arpPacket != null)
+            Printer.PrintAtp(time, arpPacket.SenderHardwareAddress.ToString(), 
+                arpPacket.TargetHardwareAddress.ToString(), len.ToString(), arpPacket.BytesSegment.Bytes);
+        }
+
+        var packet = parsedPacket.Extract<IPPacket>();
+        if (packet != null){
+            switch (packet.Protocol)
             {
-                Printer.PrintAtp(time, arpPacket.SenderHardwareAddress.ToString(), 
-                    arpPacket.TargetHardwareAddress.ToString(), len.ToString(), arpPacket.BytesSegment.Bytes);
+                case ProtocolType.Tcp:
+                case ProtocolType.Udp:
+                    var transportPacket = parsedPacket.Extract<TransportPacket>();
+                    Printer.PrintTransport(time, len.ToString(), packet.SourceAddress.ToString(),
+                        packet.DestinationAddress.ToString(), transportPacket.SourcePort.ToString(),
+                        transportPacket.DestinationPort.ToString(), transportPacket.BytesSegment.Bytes);
+                    break;
+
+
             }
         }
-        
-        
         
         _ParsedPackets++;
         if (_ParsedPackets == Options.PacketCount)
