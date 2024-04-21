@@ -51,9 +51,8 @@ public class Sniffer
             var arpPacket = parsedPacket.Extract<ArpPacket>();
             if (arpPacket != null)
             {
-                Printer.PrintAtpHeader(time, arpPacket.SenderHardwareAddress.ToString(), 
-                    arpPacket.TargetHardwareAddress.ToString(), len.ToString());
-                Printer.PrintData(arpPacket.BytesSegment.Bytes);
+                Printer.PrintAtp(time, arpPacket.SenderHardwareAddress.ToString(), 
+                    arpPacket.TargetHardwareAddress.ToString(), len.ToString(), arpPacket.BytesSegment.Bytes);
             }
         }
         

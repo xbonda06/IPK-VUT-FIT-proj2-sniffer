@@ -2,12 +2,13 @@
 
 public abstract class Printer
 {
-    public static void PrintAtpHeader(string timestamp, string srcMac, string dstMac, string frameLenth)
+    public static void PrintAtp(string timestamp, string srcMac, string dstMac, string frameLenth, byte[] bytes)
     {
         Console.WriteLine($"timestamp: {timestamp}");
         Console.WriteLine($"src MAC: {srcMac}");
         Console.WriteLine($"dst MAC: {dstMac}");
         Console.WriteLine($"frame length: {frameLenth}");
+        PrintData(bytes);
     }
 
     public static void PrintData(byte[] bytes)
