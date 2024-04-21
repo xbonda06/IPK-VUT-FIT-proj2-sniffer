@@ -10,7 +10,10 @@ Packet sniffer program for TCP, UDP, ARP, ICMP4/6, IGMP, NDP and MLD packets, bu
 ```bash
 $ make
 ```
+After building the project, the directory `/build` will be created with the executable `ipk-sniffer` in the root. 
+
 ### Run
+Go to the `/build` directory and run the executable with the following arguments:
 ```bash
 ./ipk-sniffer [-i interface | --interface interface] {-p|--port-source|--port-destination port [--tcp|-t] [--udp|-u]} [--arp] [--ndp] [--icmp4] [--icmp6] [--igmp] [--mld] {-n num}
 ```
