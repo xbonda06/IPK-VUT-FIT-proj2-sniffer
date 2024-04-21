@@ -22,6 +22,8 @@ public class Arguments
 
     public Arguments(string[] args)
     {
+        
+        PacketCount = 1;
         // Parse command line arguments
         for (int i = 0; i < args.Length; i++)
         {
