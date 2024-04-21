@@ -9,6 +9,8 @@ public class Sniffer
     private static LibPcapLiveDevice? Device { get; set; }
         
     private static Arguments Options { get; set; }
+
+    private static int _ParsedPackets = 0;
     
     public Sniffer(Arguments options)
     {
@@ -42,8 +44,27 @@ public class Sniffer
         var parsedPacket = Packet.ParsePacket(packet.LinkLayerType, packet.Data);
         var time = packet.Timeval.Date.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
         var len = packet.Data.Length;
-        var ip = parsedPacket.Extract<IPPacket>();
-
+        
+        
+        if (Options.Arp)
+        {
+            var arpPacket = parsedPacket.Extract<ArpPacket>();
+            if (arpPacket != null)
+            {
+                Printer.PrintAtpHeader(time, arpPacket.SenderHardwareAddress.ToString(), 
+                    arpPacket.TargetHardwareAddress.ToString(), len.ToString());
+            }
+        }
+        
+        
+        
+        _ParsedPackets++;
+        if (_ParsedPackets == Options.PacketCount)
+        {
+            Device?.StopCapture();
+            Device?.Close();
+            Environment.Exit(0);
+        }
     }
     
 
