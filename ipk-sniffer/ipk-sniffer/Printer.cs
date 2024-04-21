@@ -4,9 +4,11 @@ public abstract class Printer
 {
     public static void PrintAtp(string timestamp, string srcMac, string dstMac, string frameLenth, byte[] bytes)
     {
+        string srcMacFormatted = ConvertMacAddress(srcMac);
+        string dstMacFormatted = ConvertMacAddress(dstMac);
         Console.WriteLine($"timestamp: {timestamp}");
-        Console.WriteLine($"src MAC: {srcMac}");
-        Console.WriteLine($"dst MAC: {dstMac}");
+        Console.WriteLine($"src MAC: {srcMacFormatted}");
+        Console.WriteLine($"dst MAC: {dstMacFormatted}");
         Console.WriteLine($"frame length: {frameLenth}");
         PrintData(bytes);
     }
@@ -44,5 +46,15 @@ public abstract class Printer
             Console.WriteLine();
         }
         Console.WriteLine();
+    }
+    
+    public static string ConvertMacAddress(string macAddress)
+    {
+        if (macAddress.Length != 12)
+        {
+            throw new ArgumentException("Invalid MAC address length. It should be 12 characters long.");
+        }
+
+        return string.Join(":", Enumerable.Range(0, 6).Select(i => macAddress.Substring(i * 2, 2)));
     }
 }
