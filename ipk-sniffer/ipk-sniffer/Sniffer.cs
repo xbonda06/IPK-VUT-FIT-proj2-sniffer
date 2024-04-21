@@ -53,6 +53,7 @@ public class Sniffer
             {
                 Printer.PrintAtpHeader(time, arpPacket.SenderHardwareAddress.ToString(), 
                     arpPacket.TargetHardwareAddress.ToString(), len.ToString());
+                Printer.PrintData(arpPacket.BytesSegment.Bytes);
             }
         }
         
