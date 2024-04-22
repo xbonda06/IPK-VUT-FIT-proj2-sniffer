@@ -50,6 +50,38 @@ $ make clean
 
 ## Repository changelog
 
+commit 7a2c33d9af62fcaefd90d3df2fa461dd2fc2c64b
+Author: xbonda06 <mediabondar@gmail.com>
+Date:   Mon Apr 22 21:23:57 2024 +0200
+
+    fix!: Makefile target to build exec file in root dir
+
+commit cd3bf7fdeca701f0bc2a72e1c6d0eeebfeb0c724
+Author: xbonda06 <xbonda06@vutbr.cz>
+Date:   Mon Apr 22 21:21:30 2024 +0200
+
+    refactor: ipk-sniffer -> ipk_sniffer
+
+commit d37c4024a6ef510e27d9a3ff8f8ebc653b7bbf18
+Author: xbonda06 <mediabondar@gmail.com>
+Date:   Mon Apr 22 20:20:36 2024 +0200
+
+    fix: list available devices no FriendlyName ignore
+
+commit 7e342a719ae0f4ccf716836a77d3cb338a41d77c
+Author: xbonda06 <mediabondar@gmail.com>
+Date:   Mon Apr 22 18:11:02 2024 +0200
+
+    refactor: methods PrintData, ConvertMacAddress -> private
+
+commit 0a1a29e0a1080c5b096a2f1bd431149ef247dfe1
+Author: xbonda06 <mediabondar@gmail.com>
+Date:   Mon Apr 22 17:20:53 2024 +0200
+
+    refactor: add ParseArgs method
+
+    CLI arguments parsing logic moved into the separate method, which is calling from the constructor
+
 commit b421504c39502dda2ca5c57caad563d851cf5ba4
 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
 Date:   Mon Apr 22 15:31:58 2024 +0200
