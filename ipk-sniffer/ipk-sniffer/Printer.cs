@@ -50,7 +50,7 @@ public abstract class Printer
         PrintData(bytes);
     }
 
-    public static void PrintData(byte[] bytes)
+    private static void PrintData(byte[] bytes)
     {
         const int bytesPerLine = 16;
         for (int i = 0; i < bytes.Length; i += bytesPerLine)
@@ -88,8 +88,8 @@ public abstract class Printer
         }
         Console.WriteLine();
     }
-    
-    public static string ConvertMacAddress(string macAddress)
+
+    private static string ConvertMacAddress(string macAddress)
     {
         if (macAddress.Length != 12)
         {
