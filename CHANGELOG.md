@@ -50,6 +50,30 @@ $ make clean
 
 ## Repository changelog
 
+commit ab2339781b1d277d4cde8cd835b204873b7e2cef (HEAD -> main, origin/main, origin/HEAD)
+Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
+Date:   Mon Apr 22 03:27:12 2024 +0200
+
+    feat: Enhance packet handling for ICMP, ICMPv6, and IGMP protocols
+
+    This commit introduces improved handling for ICMP, ICMPv6, and IGMP packets. 
+    It adds support for ICMPv6 Multicast Listener Discovery (MLD) and 
+    Neighbor Discovery Protocol (NDP) packets. 
+    Additionally, it refactors the existing codebase to ensure clarity and 
+    extensibility in handling these protocols.
+
+commit 6cb6c984d50e65c5a779a120cc2ff4fd8bb761b4
+Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
+Date:   Mon Apr 22 02:18:33 2024 +0200
+
+    feat: add Icmp, Icmp6, Igmp sniffing
+
+commit b9628ec09996feea8e3de17294ca75b302c37c43
+Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
+Date:   Mon Apr 22 02:17:25 2024 +0200
+
+    feat: add PrintIcmpIgmp to Printer class
+
 commit cf638344337cc530f5d5d0bca7cae9182620e5bf
 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
 Date:   Sun Apr 21 22:45:49 2024 +0200
