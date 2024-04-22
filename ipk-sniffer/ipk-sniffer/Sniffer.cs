@@ -284,9 +284,15 @@ public class Sniffer
         }
         
         Console.WriteLine("Available devices:");
+        int j = 1;
         for (int i = 0; i < devices.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {devices[i].Interface.FriendlyName}");
+            if (devices[i].Interface.FriendlyName == null)
+            {
+                continue;
+            }
+            Console.WriteLine($"{j}. {devices[i].Interface.FriendlyName}");
+            j++;
         }
     }
 }
