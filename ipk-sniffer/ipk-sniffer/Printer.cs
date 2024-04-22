@@ -10,10 +10,11 @@ public abstract class Printer
         Console.WriteLine($"dst IP: {dstIp}");
         Console.WriteLine($"src port: {srcPort}");
         Console.WriteLine($"dst port: {dstPort}");
-        Console.WriteLine($"frame length: {frameLenth}");
+        Console.WriteLine($"frame length: {frameLenth}\n");
         PrintData(bytes);
     }
-    public static void PrintAtp(string timestamp, string srcMac, string dstMac, string frameLenth, byte[] bytes)
+    
+    public static void PrintIcmpIgmp(string timestamp, string frameLenth, string srcMac, string dstMac, string srcIp, string dstIp, byte[] bytes)
     {
         string srcMacFormatted = ConvertMacAddress(srcMac);
         string dstMacFormatted = ConvertMacAddress(dstMac);
@@ -21,6 +22,19 @@ public abstract class Printer
         Console.WriteLine($"src MAC: {srcMacFormatted}");
         Console.WriteLine($"dst MAC: {dstMacFormatted}");
         Console.WriteLine($"frame length: {frameLenth}");
+        Console.WriteLine($"src IP: {srcIp}");
+        Console.WriteLine($"dst IP: {dstIp}\n");
+        PrintData(bytes);
+    }
+    
+    public static void PrintAtp(string timestamp, string srcMac, string dstMac, string frameLenth, byte[] bytes)
+    {
+        string srcMacFormatted = ConvertMacAddress(srcMac);
+        string dstMacFormatted = ConvertMacAddress(dstMac);
+        Console.WriteLine($"timestamp: {timestamp}");
+        Console.WriteLine($"src MAC: {srcMacFormatted}");
+        Console.WriteLine($"dst MAC: {dstMacFormatted}");
+        Console.WriteLine($"frame length: {frameLenth}\n");
         PrintData(bytes);
     }
 
@@ -66,6 +80,6 @@ public abstract class Printer
             throw new ArgumentException("Invalid MAC address length. It should be 12 characters long.");
         }
 
-        return string.Join(":", Enumerable.Range(0, 6).Select(i => macAddress.Substring(i * 2, 2)));
+        return string.Join(":", Enumerable.Range(0, 6).Select(i => macAddress.ToLower().Substring(i * 2, 2)));
     }
 }
