@@ -285,13 +285,13 @@ public class Sniffer
         
         Console.WriteLine("Available devices:");
         int j = 1;
-        for (int i = 0; i < devices.Count; i++)
+        foreach (var t in devices)
         {
-            if (devices[i].Interface.FriendlyName == null)
+            if (t.Interface.FriendlyName == null || t.Interface.FriendlyName == "")
             {
                 continue;
             }
-            Console.WriteLine($"{j}. {devices[i].Interface.FriendlyName}");
+            Console.WriteLine($"{j}. {t.Interface.FriendlyName}");
             j++;
         }
     }
