@@ -22,6 +22,7 @@ public class Sniffer
             return;
         }
         
+        // Find device by interface name
         var devices = LibPcapLiveDeviceList.Instance;
         Device = devices.FirstOrDefault(d => d.Interface.FriendlyName == Options.Interface);
         if (Device == null)
@@ -39,7 +40,7 @@ public class Sniffer
         Device.Capture();
     }
 
-    public static void device_OnPacketArrival(object sender, PacketCapture e)
+    private static void device_OnPacketArrival(object sender, PacketCapture e)
     {
         var currPacket = e.GetPacket();
         var parsedPacket = Packet.ParsePacket(currPacket.LinkLayerType, currPacket.Data);
@@ -68,68 +69,10 @@ public class Sniffer
                 case ProtocolType.IcmpV6:
                 case ProtocolType.Igmp:
                     var data = currPacket.Data;
-                    var ethernetPacket = parsedPacket.Extract<EthernetPacket>();
-                    if (Options.Mld)
-                    {
-                        var mldPacket = parsedPacket.Extract<IcmpV6Packet>();
-                        if (mldPacket != null && (mldPacket.Type == IcmpV6Type.MulticastListenerQuery ||
-                                                  mldPacket.Type == IcmpV6Type.MulticastListenerReport ||
-                                                  mldPacket.Type == IcmpV6Type.MulticastListenerDone))
-                        {
-                            data = mldPacket.BytesSegment.Bytes;
-                            var ipv6Packet = parsedPacket.Extract<IPv6Packet>();
-                            if(ipv6Packet != null && ethernetPacket != null)
-                            {
-                                Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(), 
-                                    ethernetPacket.DestinationHardwareAddress.ToString(),ipv6Packet.SourceAddress.ToString(),
-                                    ipv6Packet.DestinationAddress.ToString(), data);
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if (Options.Ndp)
-                    {
-                        var ndpPacket = parsedPacket.Extract<NdpPacket>();
-                        if (ndpPacket != null)
-                        {
-                            data = ndpPacket.BytesSegment.Bytes;
-                            var ipv6Packet = parsedPacket.Extract<IPv6Packet>();
-                            if(ipv6Packet != null && ethernetPacket != null)
-                            {
-                                Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(), 
-                                    ethernetPacket.DestinationHardwareAddress.ToString(),ipv6Packet.SourceAddress.ToString(),
-                                    ipv6Packet.DestinationAddress.ToString(), data);
-                                break;
-                            }
-                        }
-                    }
-
-                    if (ethernetPacket != null) {
-                        if (packet is IPv6Packet ipv6Packet)
-                        {
-                            if (ipv6Packet.PayloadPacket is IcmpV6Packet icmpV6Packet)
-                            {
-                                if(icmpV6Packet.Type == IcmpV6Type.EchoRequest || icmpV6Packet.Type == IcmpV6Type.EchoReply)
-                                {
-                                    Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
-                                        ethernetPacket.DestinationHardwareAddress.ToString(), packet.SourceAddress.ToString(),
-                                        packet.DestinationAddress.ToString(), icmpV6Packet.BytesSegment.Bytes);
-                                }
-                            }
-                        } 
-                        else
-                        {
-                            Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
-                                ethernetPacket.DestinationHardwareAddress.ToString(), packet.SourceAddress.ToString(),
-                                packet.DestinationAddress.ToString(), data);
-                        }
-                    }
+                    HandleIcmpIgmp(packet, parsedPacket, time, len, data);
                     break;
             }
         }
-        
-        
         
         _parsedPackets++;
         if (_parsedPackets == Options.PacketCount)
@@ -140,6 +83,65 @@ public class Sniffer
         }
     }
     
+    private static void HandleIcmpIgmp(IPPacket packet, Packet parsedPacket, string time, int len, byte[] data)
+    {
+        var ethernetPacket = parsedPacket.Extract<EthernetPacket>();
+        if (Options.Mld)
+        {
+            var mldPacket = parsedPacket.Extract<IcmpV6Packet>();
+            if (mldPacket != null && (mldPacket.Type == IcmpV6Type.MulticastListenerQuery ||
+                                        mldPacket.Type == IcmpV6Type.MulticastListenerReport ||
+                                        mldPacket.Type == IcmpV6Type.MulticastListenerDone))
+            {
+                data = mldPacket.BytesSegment.Bytes;
+                var ipv6Packet = parsedPacket.Extract<IPv6Packet>();
+                if (ipv6Packet != null && ethernetPacket != null)
+                {
+                    Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
+                        ethernetPacket.DestinationHardwareAddress.ToString(), ipv6Packet.SourceAddress.ToString(),
+                        ipv6Packet.DestinationAddress.ToString(), data);
+                }
+            }
+        }
+
+        if (Options.Ndp)
+        {
+            var ndpPacket = parsedPacket.Extract<NdpPacket>();
+            if (ndpPacket != null)
+            {
+                data = ndpPacket.BytesSegment.Bytes;
+                var ipv6Packet = parsedPacket.Extract<IPv6Packet>();
+                if (ipv6Packet != null && ethernetPacket != null)
+                {
+                    Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
+                        ethernetPacket.DestinationHardwareAddress.ToString(), ipv6Packet.SourceAddress.ToString(),
+                        ipv6Packet.DestinationAddress.ToString(), data);
+                }
+            }
+        }
+
+        if (ethernetPacket != null)
+        {
+            if (packet is IPv6Packet ipv6Packet)
+            {
+                if (ipv6Packet.PayloadPacket is IcmpV6Packet icmpV6Packet)
+                {
+                    if (icmpV6Packet.Type == IcmpV6Type.EchoRequest || icmpV6Packet.Type == IcmpV6Type.EchoReply)
+                    {
+                        Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
+                            ethernetPacket.DestinationHardwareAddress.ToString(), packet.SourceAddress.ToString(),
+                            packet.DestinationAddress.ToString(), icmpV6Packet.BytesSegment.Bytes);
+                    }
+                }
+            }
+            else
+            {
+                Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
+                    ethernetPacket.DestinationHardwareAddress.ToString(), packet.SourceAddress.ToString(),
+                    packet.DestinationAddress.ToString(), data);
+            }
+        }
+    }
 
     private static string FilterInit()
     {
@@ -231,6 +233,8 @@ public class Sniffer
 
         return filter;
     }
+    
+    
 
     private static void HandleCancelKey(object? sender, ConsoleCancelEventArgs e)
     {
