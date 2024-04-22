@@ -30,6 +30,11 @@ public class Arguments
     {
         
         PacketCount = 1;
+        ParseArgs(args);
+    }
+
+    private void ParseArgs(string[] args)
+    {
         for (int i = 0; i < args.Length; i++)
         {
             switch (args[i])
