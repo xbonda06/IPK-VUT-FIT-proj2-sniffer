@@ -2,6 +2,9 @@
 
 namespace IPK_sniffer;
 
+/// <summary>
+/// Class which saves cli arguments and provides them to the program
+/// </summary>
 public class Arguments
 {
     public string? Interface { get; private set; }
@@ -20,11 +23,13 @@ public class Arguments
     public bool Mld { get; private set; }
     public int PacketCount { get; private set; }
 
+    /// <summary>
+    /// Constructor which parses the arguments
+    /// </summary>
     public Arguments(string[] args)
     {
         
         PacketCount = 1;
-        // Parse command line arguments
         for (int i = 0; i < args.Length; i++)
         {
             switch (args[i])
@@ -32,6 +37,7 @@ public class Arguments
                 case "-i":
                 case "--interface":
                     if (i + 1 < args.Length){
+                        // If next argument is not another flag
                         if (!args[i + 1].StartsWith("-"))
                         {
                             Interface = args[++i];
@@ -64,6 +70,7 @@ public class Arguments
                         Environment.Exit(1);
                     }
                     
+                    // Check if got a valid port number
                     if (Port < 0 || Port > 65535)
                     {
                         Console.Error.WriteLine("Port must be between 0 and 65535");
@@ -118,8 +125,6 @@ public class Arguments
                     Console.Error.WriteLine($"Unknown argument: {args[i]}");
                     Environment.Exit(1);
                     break;
-                
-                
             }
         }
     }

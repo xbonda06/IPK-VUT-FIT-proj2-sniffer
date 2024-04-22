@@ -50,6 +50,25 @@ $ make clean
 
 ## Repository changelog
 
+commit b421504c39502dda2ca5c57caad563d851cf5ba4
+Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
+Date:   Mon Apr 22 15:31:58 2024 +0200
+
+    refactor: add Start Sniffer method
+
+    The start sniffer logic moved into the public Start method, 
+    which is called from instance of Sniffer in the Program Main method
+
+commit 12fe9a4c4f97c003dd4cf03d279a07f797a2f58d
+Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
+Date:   Mon Apr 22 15:25:31 2024 +0200
+
+    refactor: move Icmp, Igmp packet parse logic to HandleIcmpIgmp method
+
+    Create method HandleIcmpIgmp, which is called from device_OnPacketArrival 
+    in cases ProtocolType.Icmp, ProtocolType.IcmpV6, ProtocolType.Igmp. 
+    This method realises Mld, Ndp, Icmp4, Icmp6, Igmp packets
+
 commit ab2339781b1d277d4cde8cd835b204873b7e2cef (HEAD -> main, origin/main, origin/HEAD)
 Author: xbonda06 <xbonda06@stud.fit.vutbr.cz>
 Date:   Mon Apr 22 03:27:12 2024 +0200

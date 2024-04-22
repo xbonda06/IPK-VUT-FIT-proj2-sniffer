@@ -1,7 +1,13 @@
 ﻿namespace IPK_sniffer;
 
+/// <summary>
+/// Helper class for printing packets
+/// </summary>
 public abstract class Printer
 {
+    /// <summary>
+    /// Prints UDP, TCP header and data
+    /// </summary>
     public static void PrintTransport(string timestamp, string frameLenth, string srcIp, string dstIp, 
         string srcPort, string dstPort, byte[] bytes)
     {
@@ -14,6 +20,9 @@ public abstract class Printer
         PrintData(bytes);
     }
     
+    /// <summary>
+    /// Universal method for printing ICMP4, ICMP6, IGMP, MLD, NDP packets
+    /// </summary>
     public static void PrintIcmpIgmp(string timestamp, string frameLenth, string srcMac, string dstMac, string srcIp, string dstIp, byte[] bytes)
     {
         string srcMacFormatted = ConvertMacAddress(srcMac);
@@ -27,6 +36,9 @@ public abstract class Printer
         PrintData(bytes);
     }
     
+    /// <summary>
+    /// Prints ARP packet`s header and data
+    /// </summary>
     public static void PrintAtp(string timestamp, string srcMac, string dstMac, string frameLenth, byte[] bytes)
     {
         string srcMacFormatted = ConvertMacAddress(srcMac);
@@ -43,18 +55,22 @@ public abstract class Printer
         const int bytesPerLine = 16;
         for (int i = 0; i < bytes.Length; i += bytesPerLine)
         {
+            // prints offset
             Console.Write($"0x{i:X4}: ");
             
+            // prints hexadecimal bytes
             for (int j = i; j < Math.Min(i + bytesPerLine, bytes.Length); j++)
             {
                 Console.Write($"{bytes[j]:X2} ");
             }
             
+            // prints spaces if the line is not full
             if (bytes.Length - i < bytesPerLine)
             {
                 Console.Write(new string(' ', (bytesPerLine - (bytes.Length - i)) * 3));
             }
             
+            // prints ASCII representation of bytes
             Console.Write(" ");
             for (int j = i; j < Math.Min(i + bytesPerLine, bytes.Length); j++)
             {
@@ -64,7 +80,7 @@ public abstract class Printer
                 }
                 else
                 {
-                    Console.Write(".");
+                    Console.Write("."); // non-printable characters
                 }
             }
             
@@ -80,6 +96,7 @@ public abstract class Printer
             throw new ArgumentException("Invalid MAC address length. It should be 12 characters long.");
         }
 
+        // Formats MAC address to xx:xx:xx:xx:xx:xx
         return string.Join(":", Enumerable.Range(0, 6).Select(i => macAddress.ToLower().Substring(i * 2, 2)));
     }
 }

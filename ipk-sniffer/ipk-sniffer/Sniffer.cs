@@ -4,12 +4,24 @@ using SharpPcap.LibPcap;
 
 namespace IPK_sniffer;
 
+/// <summary>
+/// Main class which provides packet sniffing
+/// </summary>
 public class Sniffer
 {
+    /// <summary>
+    /// Currently used device we are listening on
+    /// </summary>
     private static LibPcapLiveDevice? Device { get; set; }
         
+    /// <summary>
+    /// Parsed arguments from the command line
+    /// </summary>
     private static Arguments Options { get; set; } = null!;
 
+    /// <summary>
+    /// Number of packets already parsed
+    /// </summary>
     private static int _parsedPackets;
     
     public Sniffer(Arguments options)
@@ -30,10 +42,10 @@ public class Sniffer
             Console.WriteLine($"Device {Options.Interface} not found");
         }
     }
-
+    
     public void Start()
     {
-        Console.CancelKeyPress += HandleCancelKey;
+        Console.CancelKeyPress += HandleCancelKey; // Handle Ctrl+C
         if (Device != null)
         {
             Device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
@@ -52,6 +64,7 @@ public class Sniffer
         var time = currPacket.Timeval.Date.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
         var len = currPacket.Data.Length;
         
+        // Extract ARP packet information if available.
         var arpPacket = parsedPacket.Extract<ArpPacket>();
         if (arpPacket != null)
         {
@@ -59,6 +72,7 @@ public class Sniffer
                 arpPacket.TargetHardwareAddress.ToString(), len.ToString(), arpPacket.BytesSegment.Bytes);
         }
 
+        // Extract IP packet information if available.
         var packet = parsedPacket.Extract<IPPacket>();
         if (packet != null){
             switch (packet.Protocol)
@@ -79,6 +93,7 @@ public class Sniffer
             }
         }
         
+        // Stop capturing packets if the required number of packets has been reached
         _parsedPackets++;
         if (_parsedPackets == Options.PacketCount)
         {
@@ -88,9 +103,15 @@ public class Sniffer
         }
     }
     
+    /// <summary>
+    /// Universal help method for handling behavior of
+    /// ICMP, ICMP6, IGMP, NDP, MLD packets
+    /// </summary>
     private static void HandleIcmpIgmp(IPPacket packet, Packet parsedPacket, string time, int len, byte[] data)
     {
         var ethernetPacket = parsedPacket.Extract<EthernetPacket>();
+        
+        // Handle MLD packets if enabled
         if (Options.Mld)
         {
             var mldPacket = parsedPacket.Extract<IcmpV6Packet>();
@@ -109,6 +130,7 @@ public class Sniffer
             }
         }
 
+        // Handle NDP packets if enabled
         if (Options.Ndp)
         {
             var ndpPacket = parsedPacket.Extract<NdpPacket>();
@@ -125,12 +147,15 @@ public class Sniffer
             }
         }
 
+        // if package is not NDP or MLD
+        // check if it is ICMP4, ICMP6 or IGMP
         if (ethernetPacket != null)
         {
             if (packet is IPv6Packet ipv6Packet)
             {
                 if (ipv6Packet.PayloadPacket is IcmpV6Packet icmpV6Packet)
                 {
+                    // if package is ICMP6 echo
                     if (icmpV6Packet.Type == IcmpV6Type.EchoRequest || icmpV6Packet.Type == IcmpV6Type.EchoReply)
                     {
                         Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
@@ -141,6 +166,7 @@ public class Sniffer
             }
             else
             {
+                // if package is ICMP4 or IGMP
                 Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(),
                     ethernetPacket.DestinationHardwareAddress.ToString(), packet.SourceAddress.ToString(),
                     packet.DestinationAddress.ToString(), data);
