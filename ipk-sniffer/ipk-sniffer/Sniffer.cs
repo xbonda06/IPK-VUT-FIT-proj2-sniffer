@@ -28,16 +28,21 @@ public class Sniffer
         if (Device == null)
         {
             Console.WriteLine($"Device {Options.Interface} not found");
-            return;
         }
+    }
 
+    public void Start()
+    {
         Console.CancelKeyPress += HandleCancelKey;
-        Device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
-        
-        int readTimeoutMilliseconds = 1000;
-        Device.Open(mode: DeviceModes.Promiscuous, read_timeout: readTimeoutMilliseconds);
-        Device.Filter = FilterInit();
-        Device.Capture();
+        if (Device != null)
+        {
+            Device.OnPacketArrival += new PacketArrivalEventHandler(device_OnPacketArrival);
+
+            int readTimeoutMilliseconds = 1000;
+            Device.Open(mode: DeviceModes.Promiscuous, read_timeout: readTimeoutMilliseconds);
+            Device.Filter = FilterInit();
+            Device.Capture();
+        }
     }
 
     private static void device_OnPacketArrival(object sender, PacketCapture e)

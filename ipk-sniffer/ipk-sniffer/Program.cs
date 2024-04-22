@@ -13,8 +13,7 @@ namespace IPK_sniffer
         {
             var arguments = new Arguments(args);
             var sniffer = new Sniffer(arguments);
-            
-            
+            sniffer.Start();
         }
     }
 }
