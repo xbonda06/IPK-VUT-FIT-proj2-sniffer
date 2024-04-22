@@ -8,13 +8,14 @@ public class Sniffer
 {
     private static LibPcapLiveDevice? Device { get; set; }
         
-    private static Arguments Options { get; set; }
+    private static Arguments Options { get; set; } = null!;
 
-    private static int _ParsedPackets = 0;
+    private static int _parsedPackets;
     
     public Sniffer(Arguments options)
     {
         Options = options;
+        _parsedPackets = 0;
         if (Options.Interface == null)
         {
             ListAvailableDevices();
@@ -63,13 +64,21 @@ public class Sniffer
                         packet.DestinationAddress.ToString(), transportPacket.SourcePort.ToString(),
                         transportPacket.DestinationPort.ToString(), transportPacket.BytesSegment.Bytes);
                     break;
-
-
+                case ProtocolType.Icmp:
+                case ProtocolType.IcmpV6:
+                case ProtocolType.Igmp:
+                    var ethernetPacket = parsedPacket.Extract<EthernetPacket>();
+                    Printer.PrintIcmpIgmp(time, len.ToString(), ethernetPacket.SourceHardwareAddress.ToString(), 
+                        ethernetPacket.DestinationHardwareAddress.ToString(),packet.SourceAddress.ToString(),
+                        packet.DestinationAddress.ToString(), currPacket.Data);
+                    break;
             }
         }
         
-        _ParsedPackets++;
-        if (_ParsedPackets == Options.PacketCount)
+        
+        
+        _parsedPackets++;
+        if (_parsedPackets == Options.PacketCount)
         {
             Device?.StopCapture();
             Device?.Close();
@@ -169,11 +178,10 @@ public class Sniffer
         return filter;
     }
 
-    private static void HandleCancelKey(object sender, ConsoleCancelEventArgs e)
+    private static void HandleCancelKey(object? sender, ConsoleCancelEventArgs e)
     {
         Device?.StopCapture();
         Device?.Close();
-        Console.WriteLine("Capture stopped");
         Environment.Exit(0);
     }
     
