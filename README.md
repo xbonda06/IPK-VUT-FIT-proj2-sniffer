@@ -252,3 +252,216 @@ frame length: 50
 
 <hr>
 
+### Test 8: Running the sniffer with a valid interface and arp filtering
+- **Description**: Running the program with a valid interface and arp filtering should capture arp packets.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 --arp
+```
+- **Expected output**: The program captures one arp packet and displays its details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T19:38:41.362+00:00
+src MAC: 48:2f:6b:cb:02:c6
+dst MAC: 00:00:00:00:00:00
+frame length: 60
+
+0x0000: FF FF FF FF FF FF 48 2F 6B CB 02 C6 08 06 00 01  ......H/k.......
+0x0010: 08 00 06 04 00 01 48 2F 6B CB 02 C6 00 00 00 00  ......H/k.......
+0x0020: 00 00 00 00 00 00 0A BC 04 DE 00 00 00 00 00 00  ................
+0x0030: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+```
+
+<hr>
+
+### Test 9: Running the sniffer with a valid interface and icmpv4 filtering
+- **Description**: Running the program with a valid interface and icmpv4 filtering should capture icmpv4 packets.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 --icmp4
+```
+- **Expected output**: The program captures one icmpv4 packet and displays its details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T19:39:59.532+00:00
+src MAC: 00:00:00:00:00:00
+dst MAC: ff:ff:ff:ff:ff:ff
+frame length: 42
+src IP: 127.0.0.1
+dst IP: 127.0.0.1
+
+0x0000: FF FF FF FF FF FF 00 00 00 00 00 00 08 00 45 00  ..............E.
+0x0010: 00 1C 00 01 00 00 40 01 7C DE 7F 00 00 01 7F 00  ......@.|.......
+0x0020: 00 01 08 00 F7 FF 00 00 00 00                    ..........
+```
+
+<hr>
+
+### Test 10: Running the sniffer with a valid interface and icmpv6 filtering
+- **Description**: Running the program with a valid interface and icmpv6 filtering should capture icmpv6 packets.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 --icmp6
+```
+- **Expected output**: The program captures one icmpv6 echo packet and displays its details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T19:57:00.609+00:00
+src MAC: 00:00:00:00:00:00
+dst MAC: ff:ff:ff:ff:ff:ff
+frame length: 62
+src IP: ::1
+dst IP: ::1
+
+0x0000: FF FF FF FF FF FF 00 00 00 00 00 00 86 DD 60 00  ..............`.
+0x0010: 00 00 00 08 3A 40 00 00 00 00 00 00 00 00 00 00  ....:@..........
+0x0020: 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00  ................
+0x0030: 00 00 00 00 00 01 80 00 7F BB 00 00 00 00        ..............
+```
+
+<hr>
+
+### Test 11: Running the sniffer with a valid interface and igmp filtering
+- **Description**: Running the program with a valid interface and igmp filtering should capture igmp packets.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 --igmp
+```
+- **Expected output**: The program captures one igmp packet and displays its details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T19:58:53.928+00:00
+src MAC: b8:af:67:82:7d:a3
+dst MAC: 90:e8:68:51:9d:5f
+frame length: 56
+src IP: 192.168.1.3
+dst IP: 239.255.255.250
+
+0x0000: 90 E8 68 51 9D 5F B8 AF 67 82 7D A3 08 00 46 C0  ..hQ._..g.}...F.
+0x0010: 00 20 00 00 00 00 01 02 72 72 C0 A8 01 03 EF FF  . ......rr......
+0x0020: FF FA 94 04 00 00 11 0A FE FA EF FF FF FA 00 00  ................
+0x0030: 00 00 00 00 00 00 00 00                          ........
+```
+
+<hr>
+
+### Test 12: Running the sniffer with a valid interface and mld filtering
+- **Description**: Running the program with a valid interface and mld filtering should capture mld packets.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 --mld
+```
+- **Expected output**: The program captures one mld packet and displays its details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T20:00:23.631+00:00
+src MAC: 90:e8:68:51:9d:5f
+dst MAC: 33:33:00:00:00:01
+frame length: 78
+src IP: fe80::7401:9721:1ae6:3d79
+dst IP: ff02::1
+
+0x0000: 33 33 00 00 00 01 90 E8 68 51 9D 5F 86 DD 60 00  33......hQ._..`.
+0x0010: 00 00 00 18 3A 01 FE 80 00 00 00 00 00 00 74 01  ....:.........t.
+0x0020: 97 21 1A E6 3D 79 FF 02 00 00 00 00 00 00 00 00  .!..=y..........
+0x0030: 00 00 00 00 00 01 82 00 F5 95 27 10 00 00 00 00  ..........'.....
+0x0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00        ..............
+```
+
+<hr>
+
+### Test 13: Running the sniffer with a valid interface and ndp filtering
+- **Description**: Running the program with a valid interface and ndp filtering should capture ndp packets.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 --ndp
+```
+- **Expected output**: The program captures one ndp packet and displays its details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T20:01:12.079+00:00
+src MAC: 00:00:00:00:00:00
+dst MAC: ff:ff:ff:ff:ff:ff
+frame length: 78
+src IP: ::1
+dst IP: ::1
+
+0x0000: FF FF FF FF FF FF 00 00 00 00 00 00 86 DD 60 00  ..............`.
+0x0010: 00 00 00 18 3A FF 00 00 00 00 00 00 00 00 00 00  ....:...........
+0x0020: 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00  ................
+0x0030: 00 00 00 00 00 01 87 00 78 AA 00 00 00 00 00 00  ........x.......
+0x0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 01        ..............
+```
+
+<hr>
+
+### Test 14: Running the sniffer with a valid interface and multiple filters and packet count
+- **Description**: Running the program with a valid interface and multiple filters should capture packets based on the specified criteria.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 -p 12345 --udp --mld --ndp -n 3
+```
+- **Expected output**: The program captures three packets with the specified port and udp or mld or ndp protocol and displays their details.
+- **Result**:
+```sh
+timestamp: 2024-04-22T20:03:56.357+00:00
+src MAC: 00:00:00:00:00:00
+dst MAC: ff:ff:ff:ff:ff:ff
+frame length: 78
+src IP: ::1
+dst IP: ::1
+
+0x0000: FF FF FF FF FF FF 00 00 00 00 00 00 86 DD 60 00  ..............`.
+0x0010: 00 00 00 18 3A FF 00 00 00 00 00 00 00 00 00 00  ....:...........
+0x0020: 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00  ................
+0x0030: 00 00 00 00 00 01 87 00 78 AA 00 00 00 00 00 00  ........x.......
+0x0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 01        ..............
+
+timestamp: 2024-04-22T20:03:59.134+00:00
+src MAC: 90:e8:68:51:9d:5f
+dst MAC: 33:33:00:00:00:01
+frame length: 78
+src IP: fe80::7401:9721:1ae6:3d79
+dst IP: ff02::1
+
+0x0000: 33 33 00 00 00 01 90 E8 68 51 9D 5F 86 DD 60 00  33......hQ._..`.
+0x0010: 00 00 00 18 3A 01 FE 80 00 00 00 00 00 00 74 01  ....:.........t.
+0x0020: 97 21 1A E6 3D 79 FF 02 00 00 00 00 00 00 00 00  .!..=y..........
+0x0030: 00 00 00 00 00 01 82 00 F5 95 27 10 00 00 00 00  ..........'.....
+0x0040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00        ..............
+
+timestamp: 2024-04-22T20:04:04.957+00:00
+src IP: 127.0.0.1
+dst IP: 127.0.0.1
+src port: 53
+dst port: 12345
+frame length: 50
+
+0x0000: FF FF FF FF FF FF 00 00 00 00 00 00 08 00 45 00  ..............E.
+0x0010: 00 24 00 01 00 00 40 11 7C C6 7F 00 00 01 7F 00  .$....@.|.......
+0x0020: 00 01 00 35 30 39 00 10 A4 DE 54 65 73 74 20 55  ...509....Test U
+0x0030: 44 50                                            DP
+```
+
+<hr>
+
+### Test 15 (Negative): Running the sniffer with an invalid port number
+- **Description**: Running the program with an invalid port number should display an error message.
+- **Run**:
+```sh
+./ipk-sniffer -i eth0 -p 65536 --udp
+```
+- **Expected output**: Error message indicating an invalid port number.
+- **Result**:
+```sh
+Port must be between 0 and 65535
+```
+
+<hr>
+
+## Sources
+
+Vladimír Veselý, Project 2 - ZETA: Network sniffer [online]. Publisher: Brno University of Technology, Faculty of Information Technology, April 1th 2024. [cit. 2024-04-01]. Available at: [https://git.fit.vutbr.cz/NESFIT/IPK-Projects-2024/src/branch/master/Project%202/zeta/README.md](https://git.fit.vutbr.cz/NESFIT/IPK-Projects-2024/src/branch/master/Project%202/zeta/README.md)
+
+
+
